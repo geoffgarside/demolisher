@@ -1,0 +1,7 @@
+= demolisher
+
+Description goes here.
+
+== Copyright
+
+Copyright (c) 2009 Geoff Garside. See LICENSE for details.
