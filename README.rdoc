@@ -1,6 +1,47 @@
 = demolisher
 
-Description goes here.
+Works in a similar fashion to Builder but is instead used for extracting information from XML files rather than building them.
+
+== Example
+
+Given the simple XML example file below
+
+  <addressbook>
+    <person>
+      <firstname>Enoch</firstname>
+      <lastname>Root</lastname>
+      <contact>
+        <phone>01234 567 8900</phone>
+        <email>enoch@example.com</email>
+      </contact>
+      <active>YES</active>
+    </person>
+    <person>
+      <firstname>Randy</firstname>
+      <lastname>Waterhouse</lastname>
+      <contact>
+        <phone>01234 567 8901</phone>
+        <email>randy@example.com</email>
+      </contact>
+      <active>NO</active>
+    </person>
+  </addressbook>
+
+we can parse it with
+
+  xml = Demolisher.demolish('addressbook.xml')
+  xml.addressbook do
+    xml.person do
+      puts "#{xml.firstname} #{xml.lastname}: #{xml.contact.email}"
+      puts "this person is active" if xml.active?
+    end
+  end
+
+and we should get the result of
+
+  Enoch Root: enoch@example.com
+  this person is active
+  Randy Waterhouse: randy@example.com
 
 == Copyright
 
