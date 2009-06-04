@@ -5,11 +5,12 @@ begin
   require 'jeweler'
   Jeweler::Tasks.new do |gem|
     gem.name = "demolisher"
-    gem.summary = %Q{TODO}
+    gem.summary = %Q{Gem for extracting information from XML files, think Builder but backwards}
     gem.email = "geoff@geoffgarside.co.uk"
     gem.homepage = "http://github.com/geoffgarside/demolisher"
     gem.authors = ["Geoff Garside"]
     # gem is a Gem::Specification... see http://www.rubygems.org/read/chapter/20 for additional settings
+    gem.add_dependency('libxml-ruby', '>= 1.1.3')
   end
 
 rescue LoadError
