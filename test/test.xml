@@ -1,0 +1,20 @@
+<addressbook>
+  <person>
+    <firstname>Enoch</firstname>
+    <lastname>Root</lastname>
+    <contact>
+      <phone>01234 567 8900</phone>
+      <email>enoch@example.com</email>
+    </contact>
+    <active>YES</active>
+  </person>
+  <person>
+    <firstname>Randy</firstname>
+    <lastname>Waterhouse</lastname>
+    <contact>
+      <phone>01234 567 8901</phone>
+      <email>randy@example.com</email>
+    </contact>
+    <active>NO</active>
+  </person>
+</addressbook>
