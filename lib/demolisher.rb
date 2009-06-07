@@ -4,7 +4,10 @@ module Demolisher
   # Demolish an XML file or XML::Parser object.
   def self.demolish(file_or_xml_parser)
     file_or_xml_parser = XML::Parser.file(file_or_xml_parser) if file_or_xml_parser.kind_of?(String)
-    Node.new(file_or_xml_parser.parse, true)
+    node = Node.new(file_or_xml_parser.parse, true)
+
+    yield node if block_given?
+    node
   end
   class Node
     # Creates a new Node object. If the node is not the root node then
