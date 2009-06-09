@@ -7,8 +7,8 @@ class DemolisherTest < Test::Unit::TestCase
       Demolisher.demolish(File.dirname(__FILE__) +'/test.xml') do |xml|
         xml.addressbook do
           xml.person do
-            @people << {:firstname => xml.firstname.to_s, :lastname => xml.lastname.to_s,
-              :active => xml.active?, :email => xml.contact.email.to_s}
+            @people << {:firstname => xml.firstname, :lastname => xml.lastname,
+              :active => xml.active?, :email => xml.contact.email}
           end
         end
       end

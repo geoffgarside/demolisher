@@ -44,11 +44,18 @@ module Demolisher
           @nodes.pop
         end
       else
-        case meth.to_s
-        when /\?$/
-          !! Regexp.new(/(t(rue)?|y(es)?|1)/i).match(xpath.first.content.strip)
+        node = xpath.first
+
+        if node.find('text()').length == 1
+          content = node.find('text()').first.content
+          case meth.to_s
+          when /\?$/
+            !! Regexp.new(/(t(rue)?|y(es)?|1)/i).match(content)
+          else
+            content
+          end
         else
-          self.class.new(xpath.first, false)
+          self.class.new(node, false)
         end
       end
     end
