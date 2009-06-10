@@ -28,6 +28,7 @@ Gem::Specification.new do |s|
   s.homepage = %q{http://github.com/geoffgarside/demolisher}
   s.rdoc_options = ["--charset=UTF-8"]
   s.require_paths = ["lib"]
+  s.rubyforge_project = %q{demolisher}
   s.rubygems_version = %q{1.3.4}
   s.summary = %q{Gem for extracting information from XML files, think Builder but backwards}
   s.test_files = [

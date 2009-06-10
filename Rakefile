@@ -9,6 +9,7 @@ begin
     gem.email = "geoff@geoffgarside.co.uk"
     gem.homepage = "http://github.com/geoffgarside/demolisher"
     gem.authors = ["Geoff Garside"]
+    gem.rubyforge_project = 'demolisher'
     # gem is a Gem::Specification... see http://www.rubygems.org/read/chapter/20 for additional settings
     gem.add_dependency('libxml-ruby', '>= 1.1.3')
   end
