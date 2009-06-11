@@ -38,9 +38,9 @@ module Demolisher
       return nil if xpath.empty?
 
       if block_given?
-        xpath.each do |node|
+        xpath.each_with_index do |node, idx|
           @nodes.push(node)
-          yield
+          yield idx
           @nodes.pop
         end
       else
