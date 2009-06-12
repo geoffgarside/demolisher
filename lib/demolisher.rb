@@ -40,7 +40,12 @@ module Demolisher
       if block_given?
         xpath.each_with_index do |node, idx|
           @nodes.push(node)
-          yield idx
+          case block.arity
+          when 0
+            yield
+          when 1
+            yield idx
+          end
           @nodes.pop
         end
       else
