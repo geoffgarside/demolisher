@@ -41,10 +41,10 @@ module Demolisher
         xpath.each_with_index do |node, idx|
           @nodes.push(node)
           case block.arity
-          when 0
-            yield
           when 1
             yield idx
+          else
+            yield
           end
           @nodes.pop
         end
