@@ -1,4 +1,4 @@
-= demolisher
+= Demolisher
 
 Works in a similar fashion to Builder but is instead used for extracting information from XML files rather than building them.
 
@@ -6,7 +6,7 @@ Works in a similar fashion to Builder but is instead used for extracting informa
 
 Given the simple XML example file below
 
-  <addressbook>
+  <addressbook version="1.0">
     <person>
       <firstname>Enoch</firstname>
       <lastname>Root</lastname>
@@ -31,6 +31,7 @@ we can parse it with
 
   xml = Demolisher.demolish('addressbook.xml')
   xml.addressbook do
+    puts "Version #{xml['version']}"
     xml.person do
       puts "#{xml.firstname} #{xml.lastname}: #{xml.contact.email}"
       puts "this person is active" if xml.active?
