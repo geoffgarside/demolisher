@@ -2,6 +2,16 @@
 
 Works in a similar fashion to Builder but is instead used for extracting information from XML files rather than building them.
 
+== Installation
+
+You can install using any of the following methods
+
+  $ gem install demolisher
+  $ gem install demolisher -s http://gemcutter.org
+  $ gem install geoffgarside-demolisher -s http://gems.github.com
+
+the first two should always be stable, the latter github one should be stable but there are no guarantees.
+
 == Example
 
 Given the simple XML example file below
