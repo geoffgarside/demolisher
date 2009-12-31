@@ -3,11 +3,22 @@ require 'xml'
 module Demolisher
   # Demolish an XML file or XML::Parser object.
   def self.demolish(file_or_xml_parser)
-    file_or_xml_parser = XML::Parser.file(file_or_xml_parser) if file_or_xml_parser.kind_of?(String)
+    file_or_xml_parser = new_parser(file_or_xml_parser) if file_or_xml_parser.kind_of?(String)
     node = Node.new(file_or_xml_parser.parse, true)
 
     yield node if block_given?
     node
+  end
+
+  # ---
+  # Creates an XML::Parser from the string if its a string or the file if its a file path
+  # +++
+  def self.new_parser(string_or_filepath)
+    if File.exist?(string_or_filepath)
+      XML::Parser.file(string_or_filepath)
+    else
+      XML::Parser.string(string_or_filepath)
+    end
   end
 
   # Handles all the complexity of accessing the XML contents

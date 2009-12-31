@@ -48,4 +48,17 @@ class DemolisherTest < Test::Unit::TestCase
       end
     end
   end
+  context "Demolished XML String" do
+    setup do
+      @xml =<<-EOXML
+<hi>
+  <there>Geoff</there>
+</hi>
+EOXML
+      @demolisher = Demolisher.demolish(@xml)
+    end
+    should "find Geoff" do
+      assert_equal 'Geoff', @demolisher.hi.there
+    end
+  end
 end
