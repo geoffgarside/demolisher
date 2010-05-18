@@ -3,8 +3,8 @@
     <getManufacturerNamesResponse xmlns="http://services.somewhere.com">
       <IDAndNameList xmlns="http://services.somewhere.com">
         <ns1:IdAndName xmlns:ns1="http://domain.somewhere.com">
-			14-Demolisher
-		</ns1:IdAndName>
+          14-Demolisher
+        </ns1:IdAndName>
       </IDAndNameList>
     </getManufacturerNamesResponse>
   </soap:Body>
