@@ -61,4 +61,26 @@ EOXML
       assert_equal 'Geoff', @demolisher.hi.there
     end
   end
+  context "Demolished XML file with Namespaces" do
+    setup do
+      @id_and_name = ''
+      @namespaces = {'soap' => "http://schemas.xmlsoap.org/soap/envelope/",
+        'ns0' => "http://services.somewhere.com",
+        'ns1' => "http://domain.somewhere.com" }
+      Demolisher.demolish(File.dirname(__FILE__) +'/ns.xml', @namespaces) do |xml|
+        xml.soap :Envelope do
+          xml.soap :Body do
+            xml.ns0 :getManufacturerNamesResponse do
+              xml.ns0 :IDAndNameList do
+                @id_and_name = xml.ns1(:IdAndName).strip
+              end
+            end
+          end
+        end
+      end
+    end
+    should "get '14-Demolisher' from XML file" do
+      assert_equal '14-Demolisher', @id_and_name
+    end
+  end
 end
