@@ -2,9 +2,9 @@ require 'xml'
 
 module Demolisher
   # Demolish an XML file or XML::Parser object.
-  def self.demolish(file_or_xml_parser)
+  def self.demolish(file_or_xml_parser, namespace_list = nil)
     file_or_xml_parser = new_parser(file_or_xml_parser) if file_or_xml_parser.kind_of?(String)
-    node = Node.new(file_or_xml_parser.parse, true)
+    node = Node.new(file_or_xml_parser.parse, namespace_list, true)
 
     yield node if block_given?
     node
@@ -26,9 +26,10 @@ module Demolisher
     # Creates a new Node object.
     #
     # If the node is not the root node then the secondargument needs to be false.
-    def initialize(xml, is_root = true)
+    def initialize(xml, namespaces = nil, is_root = true)
       @nodes = [xml]
       @nodes.unshift(nil) unless is_root
+      @namespaces = namespaces
     end
 
     # Access an attribute of the current node.
@@ -62,7 +63,7 @@ module Demolisher
     #       looks like a boolean. Otherwise return text content
     #     Otherwise return a new Node instance
     def method_missing(meth, *args, &block) # :nodoc:
-      xpath = @nodes.last.find(element_from_symbol(meth))
+      xpath = xpath_for_element(meth.to_s, args.shift)
       return nil if xpath.empty?
 
       if block_given?
@@ -88,7 +89,7 @@ module Demolisher
             content
           end
         else
-          self.class.new(node, false)
+          self.class.new(node, @namespaces, false)
         end
       end
     end
@@ -98,9 +99,13 @@ module Demolisher
       @nodes.last.content.strip
     end
 
+    def xpath_for_element(el_or_ns, el_for_ns = nil)
+      @nodes.last.find(element_from_symbol(el_or_ns, el_for_ns), @namespaces)
+    end
+
     # Transforms a symbol into a XML element path.
-    def element_from_symbol(sym) # :nodoc:
-      "#{is_root_node? ? '/' : nil}#{sym.to_s.gsub(/[^a-z0-9_]/i, '')}"
+    def element_from_symbol(el_or_ns,el_for_ns = nil) # :nodoc:
+      "#{is_root_node? ? '/' : nil}#{el_or_ns.gsub(/[^a-z0-9_]/i, '')}#{el_for_ns && el_for_ns.inspect}"
     end
 
     # Indicates if the current node is the root of the XML document.
