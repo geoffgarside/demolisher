@@ -5,11 +5,11 @@
 
 Gem::Specification.new do |s|
   s.name = %q{demolisher}
-  s.version = "0.4.0"
+  s.version = "0.5.0"
 
   s.required_rubygems_version = Gem::Requirement.new(">= 0") if s.respond_to? :required_rubygems_version=
   s.authors = ["Geoff Garside"]
-  s.date = %q{2009-12-31}
+  s.date = %q{2010-05-18}
   s.email = %q{geoff@geoffgarside.co.uk}
   s.extra_rdoc_files = [
     "LICENSE",
@@ -25,6 +25,7 @@ Gem::Specification.new do |s|
      "demolisher.gemspec",
      "lib/demolisher.rb",
      "test/demolisher_test.rb",
+     "test/ns.xml",
      "test/test.xml",
      "test/test_helper.rb"
   ]
@@ -32,7 +33,7 @@ Gem::Specification.new do |s|
   s.rdoc_options = ["--charset=UTF-8"]
   s.require_paths = ["lib"]
   s.rubyforge_project = %q{demolisher}
-  s.rubygems_version = %q{1.3.5}
+  s.rubygems_version = %q{1.3.6}
   s.summary = %q{Gem for extracting information from XML files, think Builder but backwards}
   s.test_files = [
     "test/demolisher_test.rb",
