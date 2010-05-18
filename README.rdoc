@@ -8,7 +8,6 @@ You can install using any of the following methods
 
   $ gem install demolisher
   $ gem install demolisher -s http://gemcutter.org
-  $ gem install geoffgarside-demolisher -s http://gems.github.com
 
 the first two should always be stable, the latter github one should be stable but there are no guarantees.
 
