@@ -54,6 +54,56 @@ and we should get the result of
   this person is active
   Randy Waterhouse: randy@example.com
 
+== Namespaces
+
+There is now rudimentary support for XML namespaced documents. The caveat is that if you are using a document with any XML namespaced elements you must access all elements via a namespace prefix.
+
+As an example we have this document
+
+  <soap:Envelope xmlns:soap="http://schemas.xmlsoap.org/soap/envelope/">
+    <soap:Body>
+      <getManufacturerNamesResponse xmlns="http://services.somewhere.com">
+        <IDAndNameList xmlns="http://services.somewhere.com">
+          <ns1:IdAndName xmlns:ns1="http://domain.somewhere.com">
+            14-Demolisher
+          </ns1:IdAndName>
+        </IDAndNameList>
+      </getManufacturerNamesResponse>
+    </soap:Body>
+  </soap:Envelope>
+
+some of the elements define their default namespace, +getManufacturerNamesResponse+ and +IDAndNameList+ so are not prefixed. When accessing these elements they will need to be prefixed.
+
+Additionally the list of namespaces need to known ahead of parse time. For the above document the list of namespaces is
+
+1. http://schemas.xmlsoap.org/soap/envelope/ as soap
+2. http://services.somewhere.com
+3. http://domain.somewhere.com as ns1
+
+as namespace two has no prefix, its a default namespace, we will assign it one when creating the hash of namespaces.
+
+  namespaces = {
+    'soap' => "http://schemas.xmlsoap.org/soap/envelope/",
+    'ns0' => "http://services.somewhere.com",
+    'ns1' => "http://domain.somewhere.com" }
+
+this hash of namespaces is then passed to Demolisher
+
+  xml = Demolisher.demolish('soap.xml', namespaces)
+  xml.soap :Envelope do
+    xml.soap :Body do
+      xml.ns0 :getManufacturerNamesResponse do
+        xml.ns0 :IDAndNameList do
+          puts xml.ns1(:IdAndName).strip
+        end
+      end
+    end
+  end
+
+the result of this will be
+
+  14-Demolisher
+
 == Copyright
 
 Copyright (c) 2009 Geoff Garside. See LICENSE for details.
