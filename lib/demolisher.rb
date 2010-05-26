@@ -49,7 +49,7 @@ module Demolisher
     #   end
     #
     def [](attr_name)
-      @nodes.last.attributes[attr_name]
+      _current_node.attributes[attr_name]
     end
 
     # The workhorse, finds the node matching meth.
@@ -63,7 +63,7 @@ module Demolisher
     #       looks like a boolean. Otherwise return text content
     #     Otherwise return a new Node instance
     def method_missing(meth, *args, &block) # :nodoc:
-      xpath = xpath_for_element(meth.to_s, args.shift)
+      xpath = _xpath_for_element(meth.to_s, args.shift)
       return nil if xpath.empty?
 
       if block_given?
@@ -96,20 +96,24 @@ module Demolisher
 
     # Returns the current nodes contents.
     def to_s # :nodoc:
-      @nodes.last.content.strip
+      _current_node.content.strip
     end
 
-    def xpath_for_element(el_or_ns, el_for_ns = nil)
-      @nodes.last.find(element_from_symbol(el_or_ns, el_for_ns), @namespaces)
+    def _current_node
+      _is_root_node? ? @nodes.last.root : @nodes.last
+    end
+
+    def _xpath_for_element(el_or_ns, el_for_ns = nil)
+      _current_node.find(_element_from_symbol(el_or_ns, el_for_ns), @namespaces)
     end
 
     # Transforms a symbol into a XML element path.
-    def element_from_symbol(el_or_ns,el_for_ns = nil) # :nodoc:
-      "#{is_root_node? ? '/' : nil}#{el_or_ns.gsub(/[^a-z0-9_]/i, '')}#{el_for_ns && el_for_ns.inspect}"
+    def _element_from_symbol(el_or_ns,el_for_ns = nil) # :nodoc:
+      "#{_is_root_node? ? '/' : nil}#{el_or_ns.gsub(/[^a-z0-9_]/i, '')}#{el_for_ns && el_for_ns.inspect}"
     end
 
     # Indicates if the current node is the root of the XML document.
-    def is_root_node?
+    def _is_root_node?
       @nodes.size == 1
     end
   end
