@@ -11,7 +11,8 @@ begin
     gem.authors = ["Geoff Garside"]
     gem.rubyforge_project = 'demolisher'
     # gem is a Gem::Specification... see http://www.rubygems.org/read/chapter/20 for additional settings
-    gem.add_dependency('libxml-ruby', '>= 1.1.3')
+    gem.add_dependency('libxml-ruby', '>=1.1.3')
+    gem.add_dependency('nokogiri', '>=1.4.2')
   end
 
 rescue LoadError
