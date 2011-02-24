@@ -1,24 +1,29 @@
-require 'xml'
+require 'libxml'
+require 'nokogiri'
+require 'nokogiri/xml'
 
 module Demolisher
   # Demolish an XML file or XML::Parser object.
-  def self.demolish(file_or_xml_parser, namespace_list = nil)
-    file_or_xml_parser = new_parser(file_or_xml_parser) if file_or_xml_parser.kind_of?(String)
-    file_or_xml_parser = file_or_xml_parser.parse if file_or_xml_parser.respond_to?(:parse)
-    node = Node.new(file_or_xml_parser, namespace_list, true)
+  # @param [String,IO,#parse] thing
+  def self.demolish(thing, namespaces = nil)
+    thing = _parse(thing) unless thing.kind_of?(Nokogiri::XML::Document)
+    node = Node.new(thing, namespaces, true)
 
     yield node if block_given?
     node
   end
 
-  # ---
-  # Creates an XML::Parser from the string if its a string or the file if its a file path
-  # +++
-  def self.new_parser(string_or_filepath)
-    if File.exist?(string_or_filepath)
-      XML::Parser.file(string_or_filepath)
+  def self._exchange_libxml(thing)
+    thing = thing.parse if thing.respond_to?(:parse)
+    thing.to_s
+  end
+  def self._parse(thing)
+    if thing.kind_of?(LibXML::XML::Parser) || thing.kind_of?(LibXML::XML::Document)
+      Nokogiri::XML::Document.parse(_exchange_libxml(thing))
     else
-      XML::Parser.string(string_or_filepath)
+      # could be string data or a file name
+      thing = File.open(thing) if File.exists?(thing)
+      Nokogiri::XML::Document.parse(thing)
     end
   end
 
@@ -30,7 +35,8 @@ module Demolisher
     def initialize(xml, namespaces = nil, is_root = true)
       @nodes = [xml]
       @nodes.unshift(nil) unless is_root
-      @namespaces = namespaces
+      @namespaces = namespaces || {}
+      @namespaces.merge!(xml.collect_namespaces) if xml.respond_to?(:collect_namespaces)
     end
 
     # Access an attribute of the current node.
@@ -81,8 +87,8 @@ module Demolisher
       else
         node = xpath.first
 
-        if node.find('text()').length == 1
-          content = node.find('text()').first.content
+        if node.xpath('text()').length == 1
+          content = node.xpath('text()').first.content
           case meth.to_s
           when /\?$/
             !! Regexp.new(/(t(rue)?|y(es)?|1)/i).match(content)
@@ -101,11 +107,11 @@ module Demolisher
     end
 
     def _current_node
-      _is_root_node? ? @nodes.last.root : @nodes.last
+      @nodes.last
     end
 
     def _xpath_for_element(el_or_ns, el_for_ns = nil)
-      _current_node.find(_element_from_symbol(el_or_ns, el_for_ns), @namespaces)
+      _current_node.xpath(_element_from_symbol(el_or_ns, el_for_ns), @namespaces)
     end
 
     # Transforms a symbol into a XML element path.
