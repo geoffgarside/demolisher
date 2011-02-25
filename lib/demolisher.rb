@@ -84,6 +84,7 @@ module Demolisher
           end
           @nodes.pop
         end
+        self
       else
         node = xpath.first
 
