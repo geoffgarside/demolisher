@@ -56,7 +56,7 @@ module Demolisher
     #   end
     #
     def [](attr_name)
-      _current_node.attributes[attr_name]
+      _current_node.attributes[attr_name].to_s
     end
 
     # The workhorse, finds the node matching meth.
