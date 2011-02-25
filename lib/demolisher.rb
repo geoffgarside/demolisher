@@ -105,6 +105,9 @@ module Demolisher
     def to_s # :nodoc:
       _current_node.content.strip
     end
+    def inspect # :nodoc:
+      "#<#{self.class} node=#{_current_node.name}>"
+    end
 
     def _current_node
       @nodes.last
