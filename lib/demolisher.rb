@@ -79,6 +79,8 @@ module Demolisher
           case block.arity
           when 1
             yield idx
+          when 2
+            yield self.class.new(node, @namespaces, false), idx
           else
             yield
           end

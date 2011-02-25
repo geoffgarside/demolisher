@@ -47,6 +47,57 @@ class DemolisherTest < Test::Unit::TestCase
         assert_equal 'randy@example.com', @person[:email]
       end
     end
+    context "shortened form" do
+      setup do
+        @people = Array.new
+        Demolisher.demolish(File.dirname(__FILE__) +'/test.xml') do |xml|
+          xml.addressbook.person do |person, idx|
+            @people << {:firstname => person.firstname, :lastname => person.lastname,
+              :active => person.active?, :email => person.contact.email, :index => idx}
+          end
+        end
+      end
+      context "first extracted person" do
+        setup do
+          @person = @people[0]
+        end
+        should "have extracted firstname" do
+          assert_equal 'Enoch', @person[:firstname]
+        end
+        should "have extracted lastname" do
+          assert_equal 'Root', @person[:lastname]
+        end
+        should "have extracted true active status" do
+          assert @person[:active]
+        end
+        should "have extracted email" do
+          assert_equal 'enoch@example.com', @person[:email]
+        end
+        should "have index 0" do
+          assert_equal 0, @person[:index]
+        end
+      end
+      context "second extracted person" do
+        setup do
+          @person = @people[1]
+        end
+        should "have extracted firstname" do
+          assert_equal 'Randy', @person[:firstname]
+        end
+        should "have extracted lastname" do
+          assert_equal 'Waterhouse', @person[:lastname]
+        end
+        should "have extracted false active status" do
+          assert !@person[:active]
+        end
+        should "have extracted email" do
+          assert_equal 'randy@example.com', @person[:email]
+        end
+        should "have index 1" do
+          assert_equal 1, @person[:index]
+        end
+      end
+    end
   end
   context "Demolished XML String" do
     setup do
