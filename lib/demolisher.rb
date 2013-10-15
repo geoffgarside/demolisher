@@ -122,7 +122,7 @@ module Demolisher
 
     # Transforms a symbol into a XML element path.
     def _element_from_symbol(el_or_ns,el_for_ns = nil) # :nodoc:
-      "#{_is_root_node? ? '/' : nil}#{el_or_ns.gsub(/[^a-z0-9_-]/i, '')}#{el_for_ns && el_for_ns.inspect}"
+      "#{_is_root_node? ? '/' : nil}#{el_or_ns.gsub(/[^a-z0-9_-]/i, '').gsub('_', '-')}#{el_for_ns && el_for_ns.inspect.gsub('_', '-')}"
     end
 
     # Indicates if the current node is the root of the XML document.
